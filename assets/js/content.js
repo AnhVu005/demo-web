@@ -373,7 +373,7 @@ export const SERVICES = [
     title: "Thiết kế website",
     description:
       "Website doanh nghiệp, bán hàng, tin tức thiết kế riêng theo thương hiệu.",
-    price: "từ 3.900.000đ",
+    price: "từ 5.000.000đ",
     features: [
       "Thiết kế UI/UX độc quyền",
       "Responsive mọi thiết bị",
@@ -575,15 +575,53 @@ export const SERVICES = [
         { pages: "32 trang", totals: ["4.480.000đ", "6.720.000đ", "8.960.000đ"] }
       ],
       process: [
-        "Tiếp nhận thông tin khách hàng",
-        "Phân tích yêu cầu, lên phương án thiết kế",
-        "Tư vấn chi tiết, thống nhất phương án thiết kế",
-        "Tiến hành thiết kế",
-        "Hoàn thiện dự án, duyệt dự án, bàn giao cho khách hàng"
+        {
+          title: "Tiếp nhận và tìm hiểu nhu cầu",
+          description:
+            "Ocean Web tiếp nhận thông tin doanh nghiệp, mục tiêu sử dụng hồ sơ và các tài liệu, hình ảnh khách hàng hiện có để xác định phạm vi thực hiện."
+        },
+        {
+          title: "Phân tích nội dung và đề xuất bố cục",
+          description:
+            "Nội dung được rà soát, nhóm theo chủ đề và phát triển thành phương án trình bày phù hợp với lĩnh vực hoạt động, nhận diện thương hiệu và số trang dự kiến."
+        },
+        {
+          title: "Thống nhất phương án thiết kế",
+          description:
+            "Hai bên trao đổi về bố cục, phong cách thể hiện, gói dịch vụ và các hạng mục cần triển khai trước khi bắt đầu thiết kế."
+        },
+        {
+          title: "Thiết kế và hoàn thiện nội dung",
+          description:
+            "Hồ sơ được dàn trang theo phương án đã thống nhất. Các góp ý và chỉnh sửa được thực hiện theo phạm vi của gói dịch vụ đã chọn."
+        },
+        {
+          title: "Duyệt và bàn giao hồ sơ",
+          description:
+            "Sau khi khách hàng duyệt bản hoàn thiện, Ocean Web bàn giao file PDF chất lượng cao và các file thiết kế theo nội dung gói dịch vụ."
+        }
       ],
       notes: [
-        "Tổng số trang nên chia hết cho 4.",
-        "Bố cục HSNL thường gồm: bìa trước, mục lục, thư ngỏ, giới thiệu công ty, giấy phép, sơ đồ tổ chức, đội ngũ nhân sự, bằng cấp/chứng chỉ, danh mục sản phẩm/dịch vụ nổi bật, hình ảnh hoạt động, quy trình, chính sách, cam kết, dự án, công trình đã thực hiện, đối tác nổi bật, lời cảm ơn, bìa sau."
+        {
+          title: "Quy mô tài liệu",
+          description:
+            "Tổng số trang nên chia hết cho 4 để thuận tiện cho việc dàn trang và chuẩn bị file in. Số trang thực tế được thống nhất theo lượng nội dung và nhu cầu sử dụng."
+        },
+        {
+          title: "Phần giới thiệu doanh nghiệp",
+          description:
+            "Phần mở đầu có thể gồm bìa trước, mục lục, thư ngỏ, thông tin giới thiệu công ty và giấy phép. Các nội dung này tạo bối cảnh để người đọc hiểu doanh nghiệp trước khi xem các năng lực chuyên môn."
+        },
+        {
+          title: "Năng lực và hoạt động",
+          description:
+            "Các phần về sơ đồ tổ chức, đội ngũ nhân sự, bằng cấp hoặc chứng chỉ, sản phẩm và dịch vụ nổi bật, hình ảnh hoạt động, quy trình, chính sách và cam kết nên được sắp xếp theo mức độ liên quan đến khách hàng mục tiêu."
+        },
+        {
+          title: "Dự án và phần kết",
+          description:
+            "Dự án, công trình đã thực hiện và đối tác tiêu biểu có thể dùng để minh họa kinh nghiệm của doanh nghiệp. Hồ sơ thường khép lại bằng lời cảm ơn, thông tin liên hệ và bìa sau."
+        }
       ]
     },
     questions: [
@@ -936,41 +974,99 @@ export const TESTIMONIALS = [
 
 export const WEBSITE_PLANS = [
   {
-    name: "BASIC",
-    oldPrice: "6.900.000đ",
-    price: "3.900.000đ",
+    name: "Gói 1",
+    audience: "Cá nhân và shop khởi nghiệp",
+    price: "5.000.000đ",
+    annualMaintenance: "2.000.000đ/năm",
     popular: false,
-    features: [
-      "3–4 layout thiết kế riêng",
-      "Chuẩn responsive",
-      "SSL & sao lưu cơ bản",
-      "Bảo hành 6 tháng"
-    ]
+    features: ["Theo mẫu có sẵn", "Tặng tên miền .com", "Hosting 2 GB (phổ thông)"]
   },
   {
-    name: "STANDARD",
-    oldPrice: "9.900.000đ",
-    price: "7.900.000đ",
+    name: "Gói 2",
+    audience: "Doanh nghiệp nhỏ đang phát triển",
+    price: "7.000.000đ",
+    annualMaintenance: "3.000.000đ/năm",
+    popular: false,
+    features: ["Theo mẫu có sẵn", "Tặng tên miền .com", "Hosting 3 GB (phổ thông)"]
+  },
+  {
+    name: "Gói 3",
+    audience: "Doanh nghiệp vừa cần tăng trưởng mạnh",
+    price: "10.000.000đ",
+    annualMaintenance: "3.720.000đ/năm",
     popular: true,
-    features: [
-      "5–8 layout thiết kế riêng",
-      "Chuẩn SEO cơ bản",
-      "Tích hợp form, bản đồ, chat",
-      "Bảo hành 12 tháng"
-    ]
+    features: ["Thiết kế layout Figma theo yêu cầu", "Tặng tên miền .com hoặc .vn", "Hosting 3 GB (CLC)"]
   },
   {
-    name: "BUSINESS",
-    oldPrice: "16.900.000đ",
-    price: "11.900.000đ",
+    name: "Gói 4",
+    audience: "Thiết kế độc quyền thương hiệu",
+    price: "15.000.000đ",
+    annualMaintenance: "5.244.000đ/năm",
     popular: false,
-    features: [
-      "8–12 layout thiết kế riêng",
-      "Chuẩn SEO nâng cao",
-      "Tính năng theo yêu cầu",
-      "Bảo hành 12 tháng + ưu tiên"
-    ]
+    features: ["Thiết kế layout Figma độc quyền theo yêu cầu", "Tặng tên miền .com hoặc .vn", "Hosting 5 GB (CLC)"]
   }
+];
+
+export const WEBSITE_PACKAGE_FEATURES = [
+  ["Cấu trúc", ["Theo mẫu có sẵn", "Theo mẫu có sẵn", "Layout Figma theo yêu cầu", "Layout Figma độc quyền theo yêu cầu"]],
+  ["Giao diện", ["Chỉnh sửa trang chủ", "Thiết kế mới trang chủ", "Theo thương hiệu", "Theo thương hiệu"]],
+  ["Chỉnh sửa", ["Tối đa 2 lần", "Tối đa 3 lần", "Tối đa 3 lần", "Tối đa 3 lần"]],
+  ["Tư vấn", ["Online", "Online", "Trực tiếp", "Trực tiếp"]],
+  ["Bàn giao", ["Online", "Online", "Trực tiếp", "Trực tiếp"]],
+  ["Hướng dẫn quản trị", ["Online", "Online", "Trực tiếp", "Trực tiếp"]],
+  ["Tặng tên miền", [".com", ".com", ".com hoặc .vn", ".com hoặc .vn"]],
+  ["Tặng hosting", ["2 GB (phổ thông)", "3 GB (phổ thông)", "3 GB (CLC)", "5 GB (CLC)"]],
+  ["Bảo hành", ["12 tháng", "12 tháng", "12 tháng", "12 tháng"]],
+  ["Sao lưu", ["Hàng tháng", "Hàng tháng", "Hàng tháng", "Hàng tháng"]],
+  ["Thời gian thực hiện", ["5–7 ngày", "10–15 ngày", "20–25 ngày", "25–30 ngày"]],
+  ["Thanh toán", ["1 đợt", "2 đợt", "2 đợt", "2 đợt"]],
+  ["Duy trì hằng năm", ["2.000.000đ", "3.000.000đ", "3.720.000đ", "5.244.000đ"]]
+];
+
+export const WEBSITE_MODULES = [
+  ["Module cơ bản", "Trang chủ, giới thiệu, sản phẩm, dịch vụ, khóa học, tài liệu, tư vấn, tin tức, dự án, thư viện ảnh, liên hệ, slide, banner và liên kết mạng xã hội.", "6.000.000đ"],
+  ["Giao diện trang trong", "Thiết kế giao diện trang trong theo yêu cầu, chẳng hạn trang chi tiết danh mục hoặc sản phẩm.", "Theo yêu cầu cụ thể"],
+  ["Đóng dấu logo", "Chèn logo vào hình ảnh sản phẩm theo vị trí yêu cầu.", "500.000đ"],
+  ["Popup", "Hiển thị hình ảnh thông báo khi khách truy cập website.", "500.000đ"],
+  ["Popup dạng form", "Hiển thị thông báo dạng biểu mẫu để khách điền thông tin.", "Theo yêu cầu cụ thể"],
+  ["Google dịch", "Tích hợp công cụ Google Dịch trên website.", "500.000đ"],
+  ["Đẩy tin", "Hiển thị tin mới dưới dạng thông báo cho khách truy cập.", "1.500.000đ"],
+  ["Chống sao chép", "Hạn chế sao chép hình ảnh và bài viết trên website.", "500.000đ"],
+  ["Thiết kế Flash intro", "Thiết kế hiệu ứng giao diện trang mở đầu khi khách truy cập website.", "2.500.000đ"],
+  ["Mục lục, tác giả và cấu trúc SEO", "Tối ưu cấu trúc SEO, tạo mục lục bài viết theo heading và quản lý tác giả bài viết.", "3.000.000đ"],
+  ["Tìm kiếm theo gợi ý", "Lọc theo tên, mã sản phẩm, giá cả và tiêu chí liên quan.", "2.000.000đ"],
+  ["Tìm kiếm nâng cao", "Lọc sản phẩm theo thuộc tính như kích thước, màu sắc hoặc thương hiệu.", "2.500.000đ"],
+  ["Combo khóa học", "Tạo combo khóa học riêng để hiển thị trên website.", "Theo yêu cầu cụ thể"],
+  ["Giỏ hàng cơ bản", "Cho phép khách đặt hàng trực tiếp qua biểu mẫu đặt hàng cơ bản.", "2.500.000đ"],
+  ["Giỏ hàng nâng cao", "Cho phép khách đặt hàng trực tiếp qua biểu mẫu đặt hàng nâng cao.", "4.000.000đ"],
+  ["Mã giảm giá", "Tạo mã giảm giá trong trang quản trị để khách áp dụng khi mua hàng.", "1.500.000đ"],
+  ["Đăng ký, đăng nhập cơ bản", "Cho phép khách đăng ký và đăng nhập để trở thành thành viên website.", "3.000.000đ"],
+  ["Đăng ký, đăng nhập nâng cao", "Bao gồm đăng ký, đăng nhập cơ bản, lịch sử mua hàng, lịch sử thanh toán và thư thông báo.", "Theo yêu cầu cụ thể"],
+  ["Ví điện tử", "Lưu trữ xu cho khách hàng theo chương trình khuyến mãi do chủ website quy định.", "3.000.000đ"],
+  ["Nạp, rút tiền cá nhân", "Cho phép khách nạp hoặc rút tiền qua các ngân hàng liên kết.", "3.000.000đ"],
+  ["Đăng tin mua bán, cho thuê", "Đăng tin mua bán hoặc cho thuê để người bán, người mua tiếp cận khách hàng.", "3.000.000đ"],
+  ["Tạo và tra cứu vận đơn", "Tạo vận đơn, tra cứu chi tiết đơn hàng và liên kết API tra cứu vận đơn.", "Theo yêu cầu cụ thể"],
+  ["So sánh chức năng sản phẩm", "So sánh hai hoặc nhiều sản phẩm theo tiêu chí để hỗ trợ lựa chọn.", "4.000.000đ"],
+  ["Tải sản phẩm bằng Excel", "Tải dữ liệu bằng Excel để đẩy nhanh việc đưa sản phẩm lên website.", "3.000.000đ"],
+  ["Booking", "Cho phép khách đặt lịch trên website qua biểu mẫu.", "3.000.000đ"],
+  ["API booking cơ bản", "Tích hợp API booking cho khách hàng và hiển thị dữ liệu trong trang quản trị.", "Theo yêu cầu cụ thể"],
+  ["API booking nâng cao", "Tích hợp cổng booking bên thứ ba và thiết kế lại giao diện theo yêu cầu.", "Theo yêu cầu cụ thể"],
+  ["API tính phí vận chuyển", "Tự động tính phí vận chuyển qua các đơn vị như GHN hoặc GHTK.", "Theo yêu cầu cụ thể"],
+  ["Thanh toán trực tuyến", "Tích hợp cổng như Alepay, VNPay hoặc PayPal để khách thanh toán trực tiếp.", "5.000.000đ"],
+  ["Khóa học online", "Quản lý chương trình và bài học, tài liệu, video, quyền mua và học thử.", "Theo yêu cầu cụ thể"],
+  ["Đề thi trắc nghiệm", "Tạo mẫu đề thi trắc nghiệm cho website.", "Theo yêu cầu cụ thể"],
+  ["Thống kê khóa học online", "Thống kê học viên đăng ký và biểu đồ doanh thu theo khóa học.", "Theo yêu cầu cụ thể"],
+  ["Đồng bộ phần mềm quản lý kho", "Đồng bộ sản phẩm qua API của phần mềm bên thứ ba như MISA hoặc KiotViet.", "Theo yêu cầu cụ thể"],
+  ["Đánh giá sao sản phẩm, bài viết", "Cho phép khách đánh giá sản phẩm hoặc bài viết để hỗ trợ theo dõi phản hồi.", "3.000.000đ"],
+  ["Phản hồi bình luận", "Cho phép khách phản hồi trên sản phẩm; quản trị viên trả lời trong trang quản trị.", "2.000.000đ"],
+  ["Hashtag sản phẩm, bài viết", "Tạo hashtag để khách truy cập nhanh đến sản phẩm cần tìm.", "1.500.000đ"],
+  ["Affiliate (mã giới thiệu)", "Tạo link giới thiệu, cấu hình hoa hồng theo đơn hàng hoặc bậc, theo dõi lịch sử và thống kê trong trang quản trị.", "Theo yêu cầu cụ thể"],
+  ["Phân quyền thành viên", "Cho phép phân quyền thành viên trên website.", "2.000.000đ"],
+  ["Phân quyền quản trị", "Phân quyền thành viên trong trang quản trị theo quyền do quản trị viên quy định.", "3.000.000đ"],
+  ["Ngôn ngữ", "Cập nhật nội dung và hình ảnh riêng cho từng ngôn ngữ.", "20% chi phí/ngôn ngữ"],
+  ["Giao diện responsive", "Giao diện tự co giãn, tương thích với điện thoại và máy tính bảng.", "30% chi phí thiết kế"],
+  ["Giao diện mobile", "Thiết kế giao diện riêng cho thiết bị di động như điện thoại và máy tính bảng.", "50% chi phí thiết kế"],
+  ["Bảo mật SSL", "Tích hợp chứng chỉ bảo mật cho tên miền website.", "2.500.000đ"]
 ];
 
 export const HOSTING_PLANS = [
@@ -982,11 +1078,4 @@ export const HOSTING_PLANS = [
     "Không giới hạn website · 50GB SSD · CDN",
     false
   ]
-];
-
-export const WEBSITE_COMPARISON = [
-  ["Tùy biến thương hiệu", "Độc quyền, đúng nhận diện", "Mẫu chung, dễ trùng"],
-  ["Tối ưu SEO", "Chuẩn từ cấu trúc", "Hạn chế tùy chỉnh"],
-  ["Hỗ trợ", "Bảo hành, bảo trì dài hạn", "Cơ bản"],
-  ["Chi phí", "Cao hơn, giá trị lâu dài", "Rẻ, nhanh hơn"]
 ];

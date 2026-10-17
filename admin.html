@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="light">
+  <title>Quản trị nội dung website | Ocean Web</title>
+  <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <section id="login-panel" class="login-panel" aria-labelledby="login-title">
+      <a class="admin-brand" href="/" aria-label="Về trang chủ">OCEAN<span>WEB</span></a>
+      <h1 id="login-title">Đăng nhập quản trị</h1>
+      <p>Đăng nhập để quản lý nội dung và thông tin SEO của website.</p>
+      <form id="login-form">
+        <label for="login-email">Email</label>
+        <input id="login-email" name="email" type="email" autocomplete="username" required>
+        <label for="login-password">Mật khẩu</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        <button class="button primary" type="submit">Đăng nhập</button>
+        <p id="login-status" class="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="dashboard" class="dashboard" hidden>
+      <header class="topbar">
+        <div>
+          <a class="admin-brand" href="/">OCEAN<span>WEB</span></a>
+          <p id="signed-in-as" class="signed-in-as"></p>
+        </div>
+        <button id="logout-button" class="button secondary" type="button">Đăng xuất</button>
+      </header>
+
+      <div class="dashboard-layout">
+        <aside class="sidebar" aria-label="Điều hướng quản trị">
+          <label for="site-select">Website đang quản lý</label>
+          <select id="site-select"></select>
+          <form id="new-site-form" class="new-site-form">
+            <h2>Thêm website</h2>
+            <label for="new-site-name">Tên website</label>
+            <input id="new-site-name" name="name" required maxlength="100" placeholder="Ví dụ: Khách hàng ABC">
+            <label for="new-site-slug">Mã website</label>
+            <input id="new-site-slug" name="slug" required pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="80" placeholder="khach-hang-abc">
+            <label for="new-site-domain">Tên miền website</label>
+            <input id="new-site-domain" name="domain" maxlength="253" placeholder="example.com">
+            <button class="button secondary" type="submit">Tạo website</button>
+          </form>
+          <a class="back-link" href="/">← Xem website</a>
+        </aside>
+
+        <div class="workspace">
+          <section class="panel" aria-labelledby="settings-heading">
+            <h1 id="settings-heading">Thương hiệu và SEO mặc định</h1>
+            <p class="help">Khung giao diện chung của website không bị thay đổi tại đây.</p>
+            <form id="settings-form" class="form-grid">
+              <label>Tên website
+                <input name="name" required maxlength="100">
+              </label>
+              <label>Tên miền
+                <input name="domain" maxlength="253" placeholder="example.com">
+              </label>
+              <label>Tên thương hiệu hiển thị
+                <input name="brandName" required maxlength="100">
+              </label>
+              <label>Tiêu đề SEO mặc định
+                <input name="defaultSeoTitle" maxlength="160">
+              </label>
+              <label class="full-width">Mô tả SEO mặc định
+                <textarea name="defaultSeoDescription" rows="3" maxlength="320"></textarea>
+              </label>
+              <label class="full-width">Từ khóa SEO mặc định (mỗi từ khóa cách nhau bằng dấu phẩy)
+                <input name="focusKeywords" maxlength="1600" placeholder="thiết kế website, website doanh nghiệp">
+              </label>
+              <label>Điện thoại liên hệ
+                <input name="phone" maxlength="40" autocomplete="tel">
+              </label>
+              <label>Email liên hệ
+                <input name="email" type="email" maxlength="254" autocomplete="email">
+              </label>
+              <label>Địa chỉ
+                <input name="address" maxlength="250" autocomplete="street-address">
+              </label>
+              <label>Liên kết Zalo
+                <input name="zaloUrl" type="url" maxlength="2048" placeholder="https://zalo.me/...">
+              </label>
+              <label class="full-width">Mô tả chân trang
+                <textarea name="footerDescription" rows="2" maxlength="500"></textarea>
+              </label>
+              <label class="full-width">Logo
+                <span class="upload-row">
+                  <input name="logoUrl" maxlength="2048" placeholder="Tải ảnh logo hoặc nhập URL HTTPS">
+                  <input id="logo-upload" type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif">
+                </span>
+              </label>
+              <button class="button primary" type="submit">Lưu thông tin website</button>
+              <p class="status full-width" id="settings-status" role="status" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="panel" aria-labelledby="page-heading">
+            <h2 id="page-heading">Nội dung và SEO từng trang</h2>
+            <p class="help">Chỉnh nội dung chính của trang; menu, header, footer và các thành phần khung chung được giữ nguyên.</p>
+            <form id="page-form">
+              <div class="form-grid">
+                <label>Chọn trang
+                  <select name="route" id="page-route"></select>
+                </label>
+                <div id="custom-route-form" class="custom-route-form">
+                  <label for="custom-route-path">Thêm đường dẫn trang khách</label>
+                  <div class="custom-route-row">
+                    <input id="custom-route-path" name="route" maxlength="180" placeholder="gioi-thieu">
+                    <button class="button secondary" type="button">Thêm trang</button>
+                  </div>
+                  <p class="help">Nhập phần sau ?page=, ví dụ gioi-thieu hoặc dich-vu/seo.</p>
+                </div>
+                <label class="publish-toggle">
+                  <input name="isPublished" type="checkbox">
+                  Dùng nội dung quản trị cho trang này
+                </label>
+                <label>Tiêu đề trang (H1)
+                  <input name="title" required maxlength="160">
+                </label>
+                <label>Đường dẫn trang
+                  <input name="routeDisplay" readonly>
+                </label>
+                <label class="full-width">Mô tả mở đầu
+                  <textarea name="intro" rows="3" maxlength="500"></textarea>
+                </label>
+                <label>Tiêu đề SEO
+                  <input name="seoTitle" maxlength="160">
+                </label>
+                <label>Mô tả SEO
+                  <textarea name="seoDescription" rows="3" maxlength="320"></textarea>
+                </label>
+                <label class="full-width">Từ khóa SEO (mỗi từ khóa cách nhau bằng dấu phẩy)
+                  <input name="focusKeywords" maxlength="1600">
+                </label>
+              </div>
+              <div class="blocks-heading">
+                <div>
+                  <h3>Nội dung sau phần mở đầu</h3>
+                  <p class="help">Thêm tiêu đề, đoạn văn hoặc ảnh. Chỉ nội dung trang thay đổi; khung website vẫn được giữ nguyên.</p>
+                </div>
+                <button id="add-block" class="button secondary" type="button">+ Thêm nội dung</button>
+              </div>
+              <div id="content-blocks" class="content-blocks"></div>
+              <div class="form-actions">
+                <button class="button primary" type="submit">Lưu trang</button>
+                <p id="page-status" class="status" role="status" aria-live="polite"></p>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/assets/js/admin.js"></script>
+</body>
+</html>

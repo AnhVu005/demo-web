@@ -21,7 +21,105 @@ const header = document.querySelector("header");
 const nav = document.getElementById("nv");
 const menuButton = document.querySelector(".bg");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const productionOrigin = SEO.siteUrl ? new URL(SEO.siteUrl).origin : "";
+let productionOrigin = SEO.siteUrl ? new URL(SEO.siteUrl).origin : "";
+const cmsSiteSlug = document.querySelector('meta[name="cms-site"]')?.content.trim();
+const cmsApiBase = document
+  .querySelector('meta[name="cms-api"]')
+  ?.content.trim()
+  .replace(/\/$/, "");
+let cmsData = null;
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    };
+    return entities[character];
+  });
+}
+
+function renderCmsPage(page) {
+  const title = escapeHtml(page.title);
+  const intro = escapeHtml(page.intro);
+  const blocks = page.contentBlocks
+    .map((block) => {
+      if (block.type === "h2" || block.type === "h3") {
+        return `<${block.type}>${escapeHtml(block.text)}</${block.type}>`;
+      }
+      if (block.type === "paragraph") {
+        return `<p>${escapeHtml(block.text)}</p>`;
+      }
+      if (block.type === "image") {
+        return `<figure><img src="${escapeHtml(block.src)}" alt="${escapeHtml(block.alt)}" loading="lazy" decoding="async"></figure>`;
+      }
+      return "";
+    })
+    .join("");
+  const breadcrumb = page.route
+    ? ` / <span aria-current="page">${title}</span>`
+    : "";
+  return `<section class="ban"><div class="w"><nav class="cr" aria-label="Breadcrumb"><a href="?page=">Trang chủ</a>${breadcrumb}</nav><h1>${title}</h1><p>${intro}</p></div></section><section><div class="w cms-content">${blocks}</div></section>`;
+}
+
+async function loadCmsData() {
+  if (!cmsSiteSlug || !cmsApiBase) {
+    return;
+  }
+  try {
+    const response = await fetch(
+      `${cmsApiBase}/api/public/sites/${encodeURIComponent(cmsSiteSlug)}`,
+      { headers: { Accept: "application/json" } }
+    );
+    if (!response.ok) {
+      throw new Error(`CMS API returned HTTP ${response.status}.`);
+    }
+    cmsData = await response.json();
+    if (cmsData.site?.domain) {
+      productionOrigin = `https://${cmsData.site.domain
+        .replace(/^https?:\/\//, "")
+        .split("/")[0]}`;
+    }
+    const settings = cmsData.site?.settings || {};
+    const brandName = settings.brandName || cmsData.site?.name;
+    const logo = document.querySelector(".logo-mark img");
+    if (logo && settings.logoUrl) {
+      logo.src = settings.logoUrl;
+      logo.alt = brandName || "";
+    }
+    const brand = document.querySelector(".logo > span:last-child");
+    if (brand && brandName) {
+      brand.textContent = brandName;
+    }
+    if (brandName) {
+      document.querySelector(".logo")?.setAttribute("aria-label", brandName);
+      const footerBrand = document.querySelector(".fg > div:first-child h2");
+      if (footerBrand) {
+        footerBrand.textContent = brandName;
+      }
+      const copyright = document.querySelector(".copy");
+      if (copyright) {
+        copyright.textContent = copyright.textContent.split("Ocean Web").join(brandName);
+      }
+      setMeta('meta[property="og:site_name"]', "content", brandName);
+    }
+    if (settings.footerDescription) {
+      const footerDescription = document.querySelector(".fg > div:first-child p");
+      if (footerDescription) {
+        footerDescription.textContent = settings.footerDescription;
+      }
+    }
+    const icon = document.querySelector('link[rel="icon"]');
+    if (icon && settings.logoUrl) {
+      icon.href = settings.logoUrl;
+    }
+  } catch (error) {
+    console.error("Could not load website content from the CMS API.", error);
+  }
+}
 
 function formatPhone(phone) {
   return phone.replace(/\s/g, "");
@@ -79,44 +177,77 @@ function getRoute() {
 }
 
 function getPage(route) {
+  const cmsPage = cmsData?.pages?.[route];
+  if (cmsPage) {
+    return applyCmsPage(route, { html: "" });
+  }
+
   const [section, slug, subSlug] = route.split("/");
 
   if (section === "dich-vu" && slug === "thiet-ke-website" && subSlug) {
     const industry = WEBSITE_INDUSTRIES.find((item) => item.slug === subSlug);
     const service = SERVICES.find((item) => item.slug === slug);
-    return industry && service
-      ? { html: renderWebsiteIndustryPage(industry), service, industry }
-      : { html: renderNotFound(), notFound: true };
+    return applyCmsPage(
+      route,
+      industry && service
+        ? { html: renderWebsiteIndustryPage(industry), service, industry }
+        : { html: renderNotFound(), notFound: true }
+    );
   }
 
   if (section === "blog" && slug && !subSlug) {
     const category = BLOG_GROUPS.flatMap((group) => group.categories).find(
       (item) => item.slug === slug
     );
-    return category
-      ? { html: renderBlogCategoryPage(category), category }
-      : { html: renderNotFound(), notFound: true };
+    return applyCmsPage(
+      route,
+      category
+        ? { html: renderBlogCategoryPage(category), category }
+        : { html: renderNotFound(), notFound: true }
+    );
   }
 
   if (section === "dich-vu" && slug && !subSlug) {
     const service = SERVICES.find((item) => item.slug === slug);
-    return service
-      ? { html: renderServicePage(service), service }
-      : { html: renderNotFound(), notFound: true };
+    return applyCmsPage(
+      route,
+      service
+        ? { html: renderServicePage(service), service }
+        : { html: renderNotFound(), notFound: true }
+    );
   }
 
   if (section === "du-an" && slug) {
     const project = PROJECTS.find((item) => item.id === slug);
-    return project
-      ? { html: renderProjectPage(project), project }
-      : { html: renderNotFound(), notFound: true };
+    return applyCmsPage(
+      route,
+      project
+        ? { html: renderProjectPage(project), project }
+        : { html: renderNotFound(), notFound: true }
+    );
   }
 
   if (!PAGES[route]) {
+    const cmsPage = cmsData?.pages?.[route];
+    if (cmsPage) {
+      return applyCmsPage(route, { html: "" });
+    }
     return { html: renderNotFound(), notFound: true };
   }
 
-  return { html: PAGES[route]() };
+  return applyCmsPage(route, { html: PAGES[route]() });
+}
+
+function applyCmsPage(route, page) {
+  const cmsPage = cmsData?.pages?.[route];
+  if (cmsPage) {
+    return {
+      ...page,
+      html: renderCmsPage({ ...cmsPage, route }),
+      cmsPage
+    };
+  }
+  return page;
 }
 
 function renderNotFound() {
@@ -128,6 +259,21 @@ function getPageMetadata(route, page) {
     return {
       title: "Không tìm thấy trang | Ocean Web",
       description: "Trang bạn tìm không tồn tại."
+    };
+  }
+
+  if (page.cmsPage) {
+    return {
+      title:
+        page.cmsPage.seoTitle ||
+        SEO.pages[route]?.title ||
+        cmsData.site.settings?.defaultSeoTitle ||
+        page.cmsPage.title,
+      description:
+        page.cmsPage.seoDescription ||
+        SEO.pages[route]?.description ||
+        cmsData.site.settings?.defaultSeoDescription ||
+        page.cmsPage.intro
     };
   }
 
@@ -148,8 +294,11 @@ function getPageMetadata(route, page) {
 
   return (
     SEO.pages[route] || {
-      title: SEO.defaultTitle,
-      description: SEO.defaultDescription
+      title:
+        cmsData?.site?.settings?.defaultSeoTitle || SEO.defaultTitle,
+      description:
+        cmsData?.site?.settings?.defaultSeoDescription ||
+        SEO.defaultDescription
     }
   );
 }
@@ -181,14 +330,20 @@ function setCanonical(route, notFound) {
 }
 
 function createStructuredData(route, page) {
+  const brandName =
+    cmsData?.site?.settings?.brandName ||
+    cmsData?.site?.name ||
+    "Ocean Web";
   const organization = {
     "@type": "Organization",
-    name: "Ocean Web",
-    description: SEO.defaultDescription
+    name: brandName,
+    description:
+      cmsData?.site?.settings?.defaultSeoDescription ||
+      SEO.defaultDescription
   };
   const website = {
     "@type": "WebSite",
-    name: "Ocean Web",
+    name: brandName,
     inLanguage: "vi-VN",
     publisher: organization
   };
@@ -203,7 +358,7 @@ function createStructuredData(route, page) {
   }
 
   if (page.service) {
-    const provider = { "@type": "Organization", name: "Ocean Web" };
+    const provider = { "@type": "Organization", name: brandName };
     if (productionOrigin) {
       provider["@id"] = organization["@id"];
     }
@@ -218,18 +373,20 @@ function createStructuredData(route, page) {
       provider
     });
 
-    const questions = page.industry?.questions || page.service.questions;
-    graph.push({
-      "@type": "FAQPage",
-      mainEntity: questions.map(([question, answer]) => ({
-        "@type": "Question",
-        name: question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: answer
-        }
-      }))
-    });
+    if (!page.cmsPage) {
+      const questions = page.industry?.questions || page.service.questions;
+      graph.push({
+        "@type": "FAQPage",
+        mainEntity: questions.map(([question, answer]) => ({
+          "@type": "Question",
+          name: question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: answer
+          }
+        }))
+      });
+    }
   }
 
   if (page.notFound) {
@@ -248,6 +405,22 @@ function updatePageHead(route, page) {
 
   document.title = metadata.title;
   setMeta('meta[name="description"]', "content", metadata.description);
+  const cmsKeywords =
+    page.cmsPage?.focusKeywords ||
+    (route === ""
+      ? cmsData?.site?.settings?.focusKeywords || []
+      : []);
+  let keywordsElement = document.querySelector('meta[name="keywords"]');
+  if (cmsKeywords.length) {
+    if (!keywordsElement) {
+      keywordsElement = document.createElement("meta");
+      keywordsElement.name = "keywords";
+      document.head.append(keywordsElement);
+    }
+    keywordsElement.content = cmsKeywords.join(", ");
+  } else if (keywordsElement) {
+    keywordsElement.remove();
+  }
   setMeta(
     'meta[name="robots"]',
     "content",
@@ -310,26 +483,34 @@ function updateActiveNavigation(route) {
 }
 
 function updateContactInformation() {
+  const settings = cmsData?.site?.settings || {};
+  const contact = {
+    ...CONTACT,
+    phone: settings.phone || CONTACT.phone,
+    email: settings.email || CONTACT.email,
+    address: settings.address || CONTACT.address,
+    zalo: settings.zaloUrl || CONTACT.zalo
+  };
   document.querySelectorAll("[data-c]").forEach((element) => {
-    const value = CONTACT[element.dataset.c];
+    const value = contact[element.dataset.c];
     if (value) {
       element.textContent = value;
     }
   });
 
   const phoneLink = document.getElementById("fp");
-  phoneLink.href = `tel:${formatPhone(CONTACT.phone)}`;
-  phoneLink.textContent = `📞 ${CONTACT.phone}`;
+  phoneLink.href = `tel:${formatPhone(contact.phone)}`;
+  phoneLink.textContent = `📞 ${contact.phone}`;
 
   const emailLink = document.getElementById("fm");
-  emailLink.href = `mailto:${CONTACT.email}`;
-  emailLink.textContent = `✉️ ${CONTACT.email}`;
+  emailLink.href = `mailto:${contact.email}`;
+  emailLink.textContent = `✉️ ${contact.email}`;
 
   const zaloLink = document.getElementById("zl");
-  zaloLink.href = CONTACT.zalo;
+  zaloLink.href = contact.zalo;
 
   const phoneButton = document.getElementById("tl2");
-  phoneButton.href = `tel:${formatPhone(CONTACT.phone)}`;
+  phoneButton.href = `tel:${formatPhone(contact.phone)}`;
 }
 
 function updateCounters() {
@@ -471,7 +652,8 @@ function handleContactForm(event) {
   const subject = encodeURIComponent(`Tư vấn từ ${name}`);
   const body = encodeURIComponent(message);
 
-  window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
+  const email = cmsData?.site?.settings?.email || CONTACT.email;
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   form.reset();
 }
 
@@ -523,11 +705,18 @@ function initNavigation() {
 }
 
 function initialize() {
+  loadCmsData().then(() => {
+    renderRoute({ focusHeading: false });
+  });
+
   const websiteMenu = document.getElementById("website-menu");
-  websiteMenu.innerHTML = WEBSITE_INDUSTRIES.map(
-    (industry) =>
-      `<a href="?page=dich-vu/thiet-ke-website/${industry.slug}">${industry.title}</a>`
-  ).join("");
+  websiteMenu.innerHTML = [
+    '<a href="?page=bang-gia">Bảng giá thiết kế website</a>',
+    ...WEBSITE_INDUSTRIES.map(
+      (industry) =>
+        `<a href="?page=dich-vu/thiet-ke-website/${industry.slug}">${industry.title}</a>`
+    )
+  ].join("");
 
   const serviceMenu = document.getElementById("dd");
   serviceMenu.innerHTML = [
@@ -536,7 +725,6 @@ function initialize() {
         `<a href="?page=dich-vu/${service.slug}">${service.icon} ${service.title}</a>`
     ),
     '<a href="?page=quy-trinh">Quy trình làm việc</a>',
-    '<a href="?page=bang-gia">Bảng giá</a>',
     '<a href="?page=ten-mien">Tên miền & Hosting</a>'
   ].join("");
 
@@ -560,7 +748,6 @@ function initialize() {
   updateContactInformation();
   initNavigation();
   initCopyProtection();
-  renderRoute({ focusHeading: false });
 }
 
 initialize();

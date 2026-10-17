@@ -219,7 +219,7 @@ nav a:hover,nav a.on {
   font-size:26px;
   cursor:pointer
 }
-@media(max-width:960px) {
+@media(max-width:1100px) {
   .bg {
     display:block
   }
@@ -453,6 +453,11 @@ body.home-route .hero {
 .c4 {
   grid-template-columns:repeat(4,1fr)
 }
+@media(max-width:1100px) {
+  .website-plans {
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+}
 @media(max-width:900px) {
   .c3,.c4 {
     grid-template-columns:repeat(2,1fr)
@@ -513,6 +518,55 @@ a.card:hover,.card:hover {
 }
 .two p {
   color:var(--mu)
+}
+.cms-content {
+  max-width:900px
+}
+.cms-content h2,
+.cms-content h3 {
+  text-align:left
+}
+.cms-content p {
+  color:var(--mu);
+  line-height:1.8
+}
+.cms-content figure {
+  margin:24px 0
+}
+.cms-content img {
+  display:block;
+  max-width:100%;
+  height:auto;
+  margin:auto;
+  border-radius:16px
+}
+.website-pricing-link {
+  padding-top:0
+}
+.website-pricing-card {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:24px 28px;
+  border:1px solid var(--bd);
+  border-radius:18px;
+  background:#f5f9fd
+}
+.website-pricing-card h2 {
+  margin:0 0 8px;
+  text-align:left
+}
+.website-pricing-card p {
+  margin:0;
+  color:var(--mu)
+}
+@media(max-width:600px) {
+  .website-pricing-card {
+    align-items:flex-start;
+    flex-direction:column;
+    padding:22px
+  }
 }
 .ck {
   list-style:none;
@@ -598,6 +652,12 @@ a.card:hover,.card:hover {
 .pricing-scroll table {
   min-width:820px
 }
+.website-package-table {
+  min-width:980px
+}
+.website-module-table {
+  min-width:960px
+}
 .pricing-scroll--totals table {
   min-width:600px
 }
@@ -626,21 +686,45 @@ td.y {
   color:var(--ac);
   font-weight:600
 }
-.hsnl-process {
-  max-width:760px;
-  margin:24px auto 0;
-  padding-left:28px
+.hsnl-content {
+  max-width:900px;
+  margin:0 auto
 }
-.hsnl-process li {
-  padding:6px 0 6px 8px
+.hsnl-prose,
+.hsnl-prose-item p {
+  color:var(--mu);
+  line-height:1.8
 }
-.hsnl-notes {
+.hsnl-prose-item + .hsnl-prose-item {
+  margin-top:24px
+}
+.hsnl-prose-item h3 {
+  margin:0 0 8px;
+  text-align:left
+}
+.package-audience {
+  min-height:42px;
+  color:var(--mu)
+}
+.package-maintenance {
+  min-height:48px;
+  color:var(--mu);
+  font-size:14px
+}
+.package-maintenance b {
+  color:var(--tx)
+}
+.pricing-includes {
   max-width:900px;
   margin:24px auto 0;
-  padding-left:24px
+  color:var(--mu);
+  text-align:center
 }
-.hsnl-notes li + li {
-  margin-top:12px
+.pricing-terms {
+  max-width:900px
+}
+.pricing-terms p {
+  color:var(--mu)
 }
 .price {
   text-align:center;
